@@ -3,10 +3,14 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 from django.db.models import Q
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from vacations.serializers.vacations import VacationsSerializers, CreateVacationSerializer, UpdateVacationSerializer
-from common.views.mixins import CRUDListViewSet
+from common.views.mixins import CRUDListViewSet, ListViewSet
 from vacations.models import Vacations
 from vacations.permissions.vacations import IsEmployee
 from rest_framework_simplejwt import authentication as jwt_authentication
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
+
 
 
 @extend_schema_view(
@@ -50,3 +54,34 @@ class VacationsViewSet(CRUDListViewSet):
                 Q(title__icontains=search_query) | Q(company_name__icontains=search_query)
             )
         return queryset
+    
+    def perform_update(self, serializer):
+        """Разрешает обновление только создателю вакансии"""
+        vacation = self.get_object()
+        if vacation.created_by != self.request.user:
+            raise PermissionDenied("Вы можете редактировать только свои вакансии.")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        """Разрешает удаление только создателю вакансии"""
+        if instance.created_by != self.request.user:
+            raise PermissionDenied("Вы можете удалять только свои вакансии.")
+        instance.delete()
+
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary="Get vacations",
+        tags=["Vacations"]),
+)
+class MyVacationsViewSet(ListViewSet):
+    """Выводит список вакансий, созданных текущим пользователем"""
+    queryset = Vacations.objects.all()
+    serializer_class = VacationsSerializers
+    authentication_classes = (jwt_authentication.JWTAuthentication,)
+    permission_classes = [IsAuthenticated, IsEmployee]
+
+    def get_queryset(self):
+        """Фильтруем вакансии по текущему пользователю"""
+        return Vacations.objects.filter(created_by=self.request.user)
