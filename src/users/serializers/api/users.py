@@ -25,8 +25,7 @@ class RegistrationSerializer(djoser_serializers.UserCreateSerializer):
         style={'input_type': 'password'},
         write_only=True,
     )
-    role = serializers.ChoiceField(choices=[User.Role.EMPLOYER, User.Role.APPLICANT])
-
+    role = serializers.ChoiceField(choices=[User.Role.EMPLOYER, User.Role.EMPLOYEE])
 
     class Meta(djoser_serializers.UserCreateSerializer.Meta):
         model = User
@@ -131,7 +130,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for updating user information.
     """
-    role = serializers.ChoiceField(choices=[User.Role.EMPLOYER, User.Role.APPLICANT])
+    role = serializers.ChoiceField(choices=[User.Role.EMPLOYER, User.Role.EMPLOYEE])
 
     class Meta:
         model = User

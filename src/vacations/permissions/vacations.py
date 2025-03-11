@@ -17,7 +17,7 @@ class IsEmployee(IsAuthenticated):
 
 
     def has_permission(self, request: Request, view: VacationsViewSet ):
-        """Проверка пользователя, на права Курьера либо Персонала."""
+        """Проверка пользователя, на права доступа к представлению"""
         if (
                 super().has_permission(request, view) and
                 request.user.role == request.user.Role.EMPLOYER

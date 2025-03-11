@@ -12,8 +12,8 @@ class User(AbstractUser):
 
     class Role(models.TextChoices):
         ADMIN = 'ADM', _('Administrator')
-        EMPLOYER = 'EMPLOYEE', _('Employee')
-        APPLICANT = 'APPLICANT', _('Application')
+        EMPLOYER = 'EMPLOYER', _('Employer')
+        EMPLOYEE = 'EMPLOYEE', _('EMPLOYEE')
         ANONYMOUS = 'ANON', _('Anonymous')
 
 
@@ -29,7 +29,7 @@ class User(AbstractUser):
         verbose_name='User Role',
         max_length=10,
         choices=Role.choices,
-        default=Role.APPLICANT,
+        default=Role.EMPLOYEE,
     )
     email = models.EmailField(
         verbose_name='Email',
