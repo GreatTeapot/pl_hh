@@ -8,5 +8,14 @@ urlpatterns = [
 
     path('users/registration/', users.CustomUserViewSet.as_view({'post': 'registration'}), name='user-registration'),
     path('users/change-password/', users.CustomUserViewSet.as_view({'post': 'change_password'}), name='user-change-password'),
-    path('users/me/', users.CustomUserViewSet.as_view({'get': 'me'}), name='user-profile'),
+
+    path('users/me/', users.CustomUserViewSet.as_view({
+        'get': 'retrieve',
+        'put': 'update',
+        'patch': 'partial_update',
+    }), name='user-profile'),
+
+    path('users/', users.UserListSearchView.as_view({'get': 'list'}), name='user-list'),
+
+    path('users/<int:pk>/', users.UserRetrieveView.as_view({'get': 'retrieve'}), name='user-detail'),
 ]

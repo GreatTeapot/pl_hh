@@ -26,7 +26,8 @@ class VacationsViewSet(CRUDListViewSet):
     multi_permission_classes = {
         'create': (IsEmployee,),
         'update': (IsEmployee,),
-        'destroy': (IsEmployee,)
+        'destroy': (IsEmployee,),
+        
 
     }
     serializer_class = VacationsSerializers

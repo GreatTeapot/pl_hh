@@ -35,6 +35,12 @@ RegistrationSerializer: TypeAlias = user_s.RegistrationSerializer
         summary='User profile',
         tags=['User'],
     ),
+    update=extend_schema(
+        summary='Update user profile',
+        tags=['User']),
+    partial_update=extend_schema(
+        summary='Partially update user profile',
+        tags=['User']),
 
     )
 class CustomUserViewSet(mixins.ExtendedUserViewSet):
@@ -115,3 +121,16 @@ class UserListSearchView(mixins.ListViewSet):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('email', 'username')
     ordering = ('username', '-id')
+
+
+@extend_schema_view(
+    retrieve=extend_schema(summary='Get user profile by ID',
+                            tags=['User']),
+)
+class UserRetrieveView(mixins.RetrieveListViewSet):
+    """
+    Retrieve user profile by ID (public).
+    """
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = user_s.UserSerializer

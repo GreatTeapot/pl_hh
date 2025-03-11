@@ -31,12 +31,6 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.APPLICANT,
     )
-    confirm_password = models.CharField(
-        verbose_name='Confirm Password',
-        max_length=250,
-        null=True,
-        blank=True,
-    )
     email = models.EmailField(
         verbose_name='Email',
         unique=True,

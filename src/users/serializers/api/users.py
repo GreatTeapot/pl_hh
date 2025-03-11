@@ -52,7 +52,10 @@ class RegistrationSerializer(djoser_serializers.UserCreateSerializer):
 
 
     def create(self, validated_data):
+        password = validated_data.pop("password")  
         user = User.objects.create(**validated_data)
+        user.set_password(password)  
+        user.save()  
 
         tokens = TokenObtainPairSerializer().get_token(user)
         access_token = str(tokens.access_token)
@@ -63,6 +66,7 @@ class RegistrationSerializer(djoser_serializers.UserCreateSerializer):
             "access": access_token,
             "refresh": refresh_token
         }
+
 
 
 class UserSerializer(serializers.ModelSerializer):
