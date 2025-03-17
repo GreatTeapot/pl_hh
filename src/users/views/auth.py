@@ -65,7 +65,7 @@ class GoogleLogin(SocialLoginView):
     callback_url = settings.GOOGLE_OAUTH_CALLBACK_URL
     client_class = OAuth2Client
     authentication_classes = []  
-    scope_delimiter=" " 
+    scope_delimiter=" "  # Явно указываем разделитель (обычно пробел)
 
 class GoogleLoginCallback(APIView):
     permission_classes = [AllowAny]
@@ -113,7 +113,6 @@ class GoogleLoginCallback(APIView):
 
         response = Response({"access": str(access)}, status=status.HTTP_200_OK)
         set_refresh_cookie(response, str(refresh))
-
         return response
 
 
