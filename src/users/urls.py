@@ -20,7 +20,7 @@ urlpatterns = [
     path('users/<int:pk>/', users.UserRetrieveView.as_view({'get': 'retrieve'}), name='user-detail'),
 
 
-    # path("login/", auth.LoginPage.as_view(), name="login"),
+    path("login/", auth.LoginPage.as_view(), name="login"),
     path("auth/google/", auth.GoogleLogin.as_view(), name="google_login"),
     path(
         "auth/google/callback/",

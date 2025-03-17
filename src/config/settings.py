@@ -171,6 +171,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CSRF_COOKIE_SECURE = False
+CORS_ALLOW_ALL_ORIGINS = True  # Разрешаем все источники
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    
+]
+
 # endregion -------------------------------------------------------------------------
 
 # region ------------------------ DRF SPECTACULAR -----------------------------------
@@ -257,15 +264,13 @@ AUTHENTICATION_BACKENDS = (
     # 'social_core.backends.google.GoogleOAuth2',
     'users.backends.AuthBackend', 
 )
-ACCOUNT_AUTHENTICATION_METHOD = "email"  
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none" 
-
+# endregion -------------------------------------------------------------------------
+# region ------------------------------ GOOGLE ---------------------------------------
 GOOGLE_OAUTH_CLIENT_ID = env.str(var="GOOGLE_OAUTH_CLIENT_ID")
 GOOGLE_OAUTH_CLIENT_SECRET = env.str(var="GOOGLE_OAUTH_CLIENT_SECRET")
 GOOGLE_OAUTH_CALLBACK_URL = env.str(var="GOOGLE_OAUTH_CALLBACK_URL")
 BACKEND_URL = env.str(var="BACKEND_URL", default="http://localhost:8000")
+# endregion -------------------------------------------------------------------------
 
 # django-allauth (social)
 # Authenticate if local account with this email address already exists
@@ -283,7 +288,7 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {
-            "access_type": "offline",
+            "access_type": "online",
         },
     }
 }
